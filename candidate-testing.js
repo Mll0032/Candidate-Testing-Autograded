@@ -1,4 +1,3 @@
-//node candidate-testing.js
 const input = require('readline-sync');
 
 // TODO 2: modify your quiz app to ask 5 questions //
@@ -33,25 +32,36 @@ candidateName = input.question("Enter name: ")
 
 function askQuestion() {
   // TODO 1.2b: Ask candidate the question and assign the response as candidateAnswer //
-for (let i = 0; i < 5; i++) {
-  candidateAnswer = input.question(questions[i]);
+for (let i = 0; i < questions.length; i++) {
+  candidateAnswer = input.question(`${(i) +1}) ` + questions[i]);
   candidateAnswers.push(candidateAnswer);
+
 }
 }
 
 
 function gradeQuiz(candidateAnswers) {
-
+  console.log("=======================================================================================================");
   // TODO 1.2c: Let the candidate know if they have answered the question correctly or incorrectly // 
-if (candidateAnswers != correctAnswer) {
-  console.log(`Correct! Your answers were ${candidateAnswers} Correct answers are ${correctAnswers}`);
-} else {
-  console.log("Incorrect!");
-}
-
-
-  let grade;  //TODO 3.2 use this variable to calculate the candidates score.
-
+  let numberOfCorrectAnswers = 0
+  for (let i = 0; i < candidateAnswers.length; i++) {
+    if (candidateAnswers[i].toLowerCase() == correctAnswers[i].toLowerCase()) {
+    numberOfCorrectAnswers++;
+    }   
+    }   
+    
+//TODO 3.2 use this variable to calculate the candidates score.
+  let grade = numberOfCorrectAnswers / questions.length*100;
+  console.log(`Candidate Name: ${candidateName}`);
+  for (let j = 0; j < questions.length; j++) {
+    console.log(`${(j) +1}) ${questions[j]} \nYour answer: ${candidateAnswers[j]} \nCorrect answer: ${correctAnswers[j]}`);
+  }
+  console.log(`>>> Overall Grade: ${grade}% (${numberOfCorrectAnswers} of ${questions.length} responses correct) <<<`);
+  if (grade >= 80){
+    console.log(">>> Status PASSED <<<");
+  } else {
+    console.log(">>> Status FAILED <<<");
+  }
 
   return grade;
 }
@@ -63,8 +73,7 @@ function runProgram() {
    askQuestion();
    gradeQuiz(this.candidateAnswers);
 }
-//git push
-runProgram();
+
 // ----------- Don't write any code or change any code below this line ---------- //
 module.exports = {
   candidateName: candidateName,
